@@ -10,13 +10,13 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
         activeName: 'second'
     };
   },
   methods: {
-    handleClick(tab, event) {
+    handleClick (tab, event) {
         console.log(tab, event);
     }
   }

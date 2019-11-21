@@ -1,3 +1,4 @@
+
 <template>
 <div id="app">
     <router-view></router-view>
@@ -5,7 +6,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+    data () {
+        return {
+            activeName: 'second'
+        };
+    }
+};
 </script>
 
 <style lang="scss">
@@ -44,5 +51,5 @@ body {
         margin-bottom: 10px;
     }
 }
-
 </style>
+

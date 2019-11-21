@@ -1,5 +1,5 @@
-import axios from 'axios'
-import Cookies from 'js-cookie'
+import axios from 'axios';
+import Cookies from 'js-cookie';
 // 请求数据正常状态
 const ajaxMy = axios.create({
   baseURL: process.env.BASE_API,
@@ -15,7 +15,7 @@ ajaxMy.interceptors.request.use(config => {
       data.url = data.url + "&t=" + Date.parse(new Date());
   }
   config.headers["Cache-Control"] = "no-cache";
-  config.headers["Authorization"] = getToken(); // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+//   config.headers["Authorization"] = getToken(); // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
   config = data;
   return config;
 }, error => {
@@ -36,15 +36,15 @@ ajaxMy.interceptors.response.use(response => response, error => {
                       // router.push({
                       //     path: "/timeOut"
                       // });
-                      if (Cookies.get("COOKIE_SENDFROMCLIENT") === "false") {
-                          this.$router.push({
-                            path: "/manage/baiduOffMap"
-                          });
-                      } else {
-                          router.push({
-                              path: "/timeOut"
-                          });
-                      }
+                    //   if (Cookies.get("COOKIE_SENDFROMCLIENT") === "false") {
+                    //       this.$router.push({
+                    //         path: "/manage/baiduOffMap"
+                    //       });
+                    //   } else {
+                    //       router.push({
+                    //           path: "/timeOut"
+                    //       });
+                    //   }
                       // window.location.href = '/TimeOut.html?url=' + window.location.href;
                       break;
                   default:
@@ -86,14 +86,13 @@ ajaxMy.interceptors.response.use(response => response, error => {
 });
 export default ajaxMy;
 
-
-export function getCookies(params) {
-  return Cookies.get(params) || ''
+export function getCookies (params) {
+  return Cookies.get(params) || '';
 }
 
-export function setCookies(memberNo, openid, token) {
-  Cookies.set('memberNo', memberNo)
-  Cookies.set('openid', openid)
-  Cookies.set('token', token)
+export function setCookies (memberNo, openid, token) {
+  Cookies.set('memberNo', memberNo);
+  Cookies.set('openid', openid);
+  Cookies.set('token', token);
 }
 

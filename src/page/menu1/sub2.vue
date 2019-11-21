@@ -151,7 +151,7 @@
 <script>
 import pagination from "common/pagination";
 export default {
-  data() {
+  data () {
     return {
       totalPage: 300,
       tableData: [
@@ -204,21 +204,21 @@ export default {
     };
   },
   methods: {
-    receivePageSize(val) {
+    receivePageSize (val) {
       console.log(val);
     },
-    receiveCurrentPage(val) {
+    receiveCurrentPage (val) {
       console.log(val);
     },
     // 修改table header的背景色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         return "background-color: #F7F6Fd;color: #B6B5C2;font-weight: 500;";
       }
     }
   },
   watch: {
-    DateValue(newval, oldval) {
+    DateValue (newval, oldval) {
       console.log(newval);
       console.log(oldval);
     }

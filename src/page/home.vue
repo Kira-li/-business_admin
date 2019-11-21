@@ -26,7 +26,7 @@
       <aside :class="'menu-expanded'">
         <!--导航菜单-->
        <el-menu :default-active="$route.path" ref="bigmenu" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" unique-opened router>
-         <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden && checkContains(item.name)">
+         <div v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden && checkContains(item.name)">
            <el-submenu :index="index+''" v-if="!item.single">
              <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
              <el-menu-item v-for="child in item.children" @click="addRouter(child, item.path +'/'+ child.path)" :index="item.path +'/'+ child.path" :key="item.path +'/'+ child.path" v-if="!child.hidden && checkContains(child.name)">{{child.name}}</el-menu-item>
@@ -34,14 +34,14 @@
            <router-link v-else v-for="child in item.children" :index="child.path" :key="child.path" :to="child.path">
               <div @click="addRouter(child)" class="single-menu">{{child.name}}</div>
            </router-link>
-         </template>
+         </div>
        </el-menu>
      </aside>
      <section class="content-container">
        <div class="grid-content bg-purple-light">
          <el-row class="nav-tabs">
           <el-col :span="24">
-            <div @click="changeRouter(index)" v-for="(option, index) in arry" class="cus-tab-box" :class="activepath==option.path?'activeTab':''">
+            <div @click="changeRouter(index)" v-for="(option, index) in arry" :key="index" class="cus-tab-box" :class="activepath==option.path?'activeTab':''">
               <span>{{option.name}}</span>
               <span @click.stop="arry.length!=1 && removeTab(index)"><i class="fa fa-times close-icon" aria-hidden="true"></i></span>
             </div>
@@ -60,12 +60,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
+
 import * as types from "../store/mutation-types";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       sysName: "管理系统",
       sysUserName: "",
@@ -75,16 +75,16 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
+    $route (to, from) {
       this.activepath = to.path;
     }
   },
   methods: {
-    //退出登录
-    logoutFun: function() {
+    // 退出登录
+    logoutFun: function () {
       var _this = this;
       this.$confirm("确认退出吗?", "提示", {
-        //type: 'warning'
+        // type: 'warning'
       })
         .then(() => {
           sessionStorage.removeItem("user");
@@ -93,12 +93,12 @@ export default {
         .catch(() => {});
     },
     // 往tab页添加router
-    addRouter(data, path) {
+    addRouter (data, path) {
       const obj = Object.assign({}, data);
       obj.path = path;
       let add = true;
       for (let i = 0; i < this.arry.length; i++) {
-        if (this.arry[i].path == obj.path) {
+        if (this.arry[i].path === obj.path) {
           add = false;
         }
       }
@@ -109,27 +109,27 @@ export default {
       sessionStorage.setItem("tabData", JSON.stringify(this.arry));
     },
     // 操作tab
-    changeRouter(index) {
+    changeRouter (index) {
       this.$router.push(this.arry[index].path);
     },
     // 检查树结构是否包含当前节点
-    checkContains(name) {
+    checkContains (name) {
       return true;
       // return this.treeArry.includes(name);
     },
     // 遍历后台返回权限树节点数据
-    checkTreeNode(tree) {
+    checkTreeNode (tree) {
       for (var i = 0; i < tree.length; i++) {
-        this.treeArry.push(tree[i].name)
+        this.treeArry.push(tree[i].name);
         if (tree[i].child && tree[i].child.length > 0) {
           this.checkTreeNode(tree[i].child);
         }
       }
     },
     // remove Tab
-    removeTab(index) {
+    removeTab (index) {
       this.arry.splice(index, 1);
-      if (index == 0) {
+      if (index === 0) {
         this.$router.push(this.arry[0].path);
       } else {
         this.$router.push(this.arry[index - 1].path);
@@ -140,13 +140,13 @@ export default {
       setTabData: types.SET_TABDATA
     })
   },
-  created() {
+  created () {
     this.checkTreeNode(this.treeData);
     if (JSON.parse(sessionStorage.getItem("tabData"))) {
       this.arry = JSON.parse(sessionStorage.getItem("tabData"));
       this.activepath = this.$route.path;
     } else {
-      let obj = {};
+      const obj = {};
       obj.path = this.$route.path;
       obj.name = this.$route.name;
       this.activepath = this.$route.path;
@@ -161,7 +161,7 @@ export default {
   computed: {
     ...mapGetters(["username", "password", "treeData"])
   },
-  mounted() {
+  mounted () {
     var user = sessionStorage.getItem("user");
     if (user) {
       user = JSON.parse(user);

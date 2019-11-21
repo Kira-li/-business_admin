@@ -2,19 +2,19 @@
   <div class="login-box">
     <div class="login-page-container">
       <el-form
-        :model="ruleForm2"
-        :rules="rules2"
-        ref="ruleForm2"
+        :model= "ruleForm"
+        :rules= "rules"
+        ref="ruleforms"
         label-position="left"
         label-width="0px"
         class="demo-ruleForm login-container"
       >
         <h3 class="title">系统登录</h3>
         <el-form-item prop="account">
-          <el-input type="text" v-model="ruleForm2.account" placeholder="随便输"></el-input>
+          <el-input type="text" v-model="ruleForm.account" placeholder="随便输"></el-input>
         </el-form-item>
         <el-form-item prop="checkPass">
-          <el-input type="password" v-model="ruleForm2.checkPass" placeholder="随便输"></el-input>
+          <el-input type="password" v-model="ruleForm.checkPass" placeholder="随便输"></el-input>
         </el-form-item>
         <el-checkbox click="remberuser" v-model="checked" checked class="remember">记住密码</el-checkbox>
         <el-form-item style="width:100%;">
@@ -31,14 +31,14 @@ import { mapMutations } from "vuex";
 import * as types from "../store/mutation-types";
 export default {
   props: {},
-  data() {
+  data () {
     return {
       logining: false,
-      ruleForm2: {
+      ruleForm: {
         account: "",
         checkPass: ""
       },
-      rules2: {
+      rules: {
         account: [
           {
             required: true,
@@ -57,31 +57,31 @@ export default {
       checked: true
     };
   },
-  created() {
-    this.ruleForm2.checkPass = "";
-    if (localStorage.getItem('userName')) {  // 记住密码操作
-      this.ruleForm2.account = localStorage.getItem('userName');
-      this.ruleForm2.checkPass = localStorage.getItem('password');
+  created () {
+    this.ruleForm.checkPass = "";
+    if (localStorage.getItem('userName')) { // 记住密码操作
+      this.ruleForm.account = localStorage.getItem('userName');
+      this.ruleForm.checkPass = localStorage.getItem('password');
     }
   },
   methods: {
-    login() {
-      this.$refs.ruleForm2.validate(valid => {
+    login () {
+      this.$refs.ruleforms.validate(valid => {
         if (valid) {
           this.logining = true;
           // 模拟登录
           setTimeout(() => {
             const params = {
-              userName: this.ruleForm2.account,
-              password: this.ruleForm2.checkPass
+              userName: this.ruleForm.account,
+              password: this.ruleForm.checkPass
             };
             sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
             this.logining = false;
-            this.$router.push({ path: "/menu1/sub1" });  // 去主页
+            this.$router.push({ path: "/menu1/sub1" }); // 去主页
           }, 1000);
           // const params = {
-          //   userName: this.ruleForm2.account,
-          //   password: this.ruleForm2.checkPass
+          //   userName: this.ruleForm.account,
+          //   password: this.ruleForm.checkPass
           // };
           // commonApi.loginUserNo(params).then(res => {
           //     let { data } = res;

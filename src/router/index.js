@@ -1,18 +1,18 @@
-import Vue from "vue"
-import VueRouter from "vue-router"
+import Vue from "vue";
+import VueRouter from "vue-router";
 
 // 引入组件
 
-import login from '../page/login.vue'
-import home from '../page/home.vue'
-import notFound from '../page/404.vue'
-import sub11 from '../page/menu1/sub1.vue'
-import sub12 from '../page/menu1/sub2.vue'
-import sub21 from '../page/menu2/sub1.vue'
+import login from '../page/login.vue';
+import home from '../page/home.vue';
+import notFound from '../page/404.vue';
+import sub11 from '../page/menu1/sub1.vue';
+import sub12 from '../page/menu1/sub2.vue';
+import sub21 from '../page/menu2/sub1.vue';
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
-let routes = [
+const routes = [
   {
     path: "/",
     redirect: '/login',
@@ -34,7 +34,7 @@ let routes = [
     path: '/menu1',
     component: home,
     name: '菜單一',
-    iconCls: 'el-icon-message', //图标样式class
+    iconCls: 'el-icon-message', // 图标样式class
     children: [
       {
         path: 'sub1',
@@ -64,5 +64,7 @@ let routes = [
 ];
 var router = new VueRouter({
     routes
-})
+});
+
 export default router;
+

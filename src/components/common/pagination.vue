@@ -24,10 +24,10 @@ export default {
     }
   },
   methods: {
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.$emit("sendPageSize", val);
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.$emit("sendCurrentPage", val);
     }
   }

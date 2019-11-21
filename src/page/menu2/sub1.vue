@@ -17,7 +17,7 @@
 <script>
 import pagination from "common/pagination";
 export default {
-  data() {
+  data () {
     return {
       totalPage: 300,
       tableData: [
@@ -45,10 +45,10 @@ export default {
     };
   },
   methods: {
-    receivePageSize(val) {
+    receivePageSize (val) {
       console.log(val);
     },
-    receiveCurrentPage(val) {
+    receiveCurrentPage (val) {
       console.log(val);
     }
   },
