@@ -4,6 +4,8 @@ import VueRouter from "vue-router";
 // 引入组件
 
 import login from '../page/login.vue';
+import regesiter from '../page/regesiter.vue';
+import changepwd from '../page/changepwd.vue';
 import home from '../page/home.vue';
 import notFound from '../page/404.vue';
 import sub11 from '../page/menu1/sub1.vue';
@@ -21,7 +23,19 @@ const routes = [
   {
     path: '/login',
     component: login,
-    name: '',
+    name: '登录',
+    hidden: true
+  },
+  {
+    path: '/regesiter',
+    component: regesiter,
+    name: '注册',
+    hidden: true
+  },
+  {
+    path: '/changepwd',
+    component: changepwd,
+    name: '修改密码',
     hidden: true
   },
   {

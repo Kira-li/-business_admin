@@ -19,11 +19,17 @@ Vue.config.productionTip = false;
   */
 /* eslint-disable no-new */
 router.beforeEach((to, from, next) => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
     if (to.path === '/login') {
         sessionStorage.removeItem('user');
-    }
-    const user = JSON.parse(sessionStorage.getItem('user'));
-    if (!user && to.path !== '/login') {
+        next();
+    } else if (to.path === '/regesiter') {
+        sessionStorage.removeItem('user');
+        next();
+    } else if (to.path === '/changepwd') {
+        sessionStorage.removeItem('user');
+        next();
+    } else if (!user && to.path !== '/login') {
         next({
             path: '/login'
         });
