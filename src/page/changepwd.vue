@@ -1,13 +1,14 @@
 <template>
-    <div>
+    <div class="login-box">
         <el-form
         :model= "ruleForm"
         :rules= "rules"
         ref="ruleforms"
         label-position="left"
         label-width="80px"
-        class="demo-ruleForm login-container"
+        class="demo-ruleForm change-container"
       >
+        <el-button type="primary" size="mini" icon="el-icon-back" class="back" @click="goBack">返回</el-button>
         <h3 class="title">修改密码</h3>
         <el-form-item prop="account" label="用户名">
           <el-input type="text" v-model="ruleForm.account" placeholder="用户名"></el-input>
@@ -68,6 +69,9 @@ export default {
     }
   },
   methods: {
+    goBack () {
+      this.$router.push({ path: "/login" });
+    },
     regesiter () {
       this.$router.push({ path: "/regesiter" });
     },
@@ -98,10 +102,25 @@ export default {
 };
 </script>
 
-<style>
-    .page-container {
-        font-size: 20px;
-        text-align: center;
-        color: rgb(192, 204, 218);
+<style scoped lang="scss">
+    .change-container {
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      background-clip: padding-box;
+      margin: 80px auto;
+      width: 350px;
+      max-height: 440px;
+      overflow: auto;
+      padding: 35px 35px 15px;
+      background: #fff;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 0 25px #cac6c6;
+      position: relative;
+      .back {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
     }
 </style>

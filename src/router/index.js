@@ -8,8 +8,7 @@ import regesiter from '../page/regesiter.vue';
 import changepwd from '../page/changepwd.vue';
 import home from '../page/home.vue';
 import notFound from '../page/404.vue';
-import sub11 from '../page/menu1/sub1.vue';
-import sub12 from '../page/menu1/sub2.vue';
+import index from '../page/index/home.vue';
 import sub21 from '../page/menu2/sub1.vue';
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
@@ -45,20 +44,15 @@ const routes = [
     hidden: true
   },
   {
-    path: '/menu1',
+    path: '/index',
     component: home,
-    name: '菜單一',
+    name: '首页',
     iconCls: 'el-icon-message', // 图标样式class
     children: [
       {
-        path: 'sub1',
-        component: sub11,
-        name: '子菜單一'
-      },
-      {
-        path: 'sub2',
-        component: sub12,
-        name: '子菜單二'
+        path: 'home',
+        component: index,
+        name: '首页'
       }
     ]
   },

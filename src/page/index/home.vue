@@ -1,0 +1,51 @@
+<template>
+<div class="container-box">
+    <el-row>
+        <el-col :span="16">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>公告板</span>
+                </div>
+                <div>
+                    <p>---------------------------------------------------------------</p>
+                    历史公告：<br>
+                    <br>
+                    新更新：增加商家导入<span>历史订单</span>功能（最近40天有在历史订单里的旺旺不分配任务，用于其他平台转过来的商家避免旺旺重复购买）
+                    新更新：<span>免费催收</span> 和 <span>邀请追评功能</span><br>
+                    单链接刷的比例占总销量不要超过30%，特别是新品，还有关键词转化率一定要控制好，关键词转化率在流量纵横——商品流量来源——手淘搜索里查看
+                </div>
+            </el-card>
+        </el-col>
+        <el-col :span="8">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>登录信息</span>
+                </div>
+                <div>
+                    <p><strong>上次登录IP</strong></p>
+                    <p>172.1.1.1</p>
+                    <p><strong>上次登录时间</strong></p>
+                    2019.11.29
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
+</div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+        activeName: 'second'
+    };
+  },
+  methods: {
+    handleClick (tab, event) {
+        console.log(tab, event);
+    }
+  }
+};
+</script>
+
+<style lang="css">
+</style>
