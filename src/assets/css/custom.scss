@@ -5,6 +5,9 @@ body{
 .el-form-item {
     margin-bottom: 16px;
 }
+.el-card__header {
+    padding: 0 !important;
+}
 .el-menu-vertical-demo{
     background-color: $globalBgColor !important;
     width: 180px;

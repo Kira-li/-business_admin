@@ -4,7 +4,7 @@
         <el-col :span="16">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>公告板</span>
+                    <div class="box-card-header" style="background: #d3dfd9">公告板</div>
                 </div>
                 <div>
                     <p>---------------------------------------------------------------</p>
@@ -19,13 +19,22 @@
         <el-col :span="8">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>登录信息</span>
+                    <div class="box-card-header" style="background: #b3ffd9;" >登录信息</div>
                 </div>
                 <div>
                     <p><strong>上次登录IP</strong></p>
                     <p>172.1.1.1</p>
                     <p><strong>上次登录时间</strong></p>
                     2019.11.29
+                </div>
+            </el-card>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <div class="box-card-header" style="background: #409EFF;">专属客服</div>
+                </div>
+                <div>
+                    <p>圈圈</p>
+                    <p>微信号：552251</p>
                 </div>
             </el-card>
         </el-col>
@@ -47,5 +56,15 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="scss" scoped>
+.el-card__header {
+    padding: 0 !important;
+}
+.box-card-header {
+    width: 100%;
+    color: #fff;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+}
 </style>

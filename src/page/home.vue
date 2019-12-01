@@ -25,17 +25,25 @@
     <el-col :span="24" class="main">
       <aside :class="'menu-expanded'">
         <!--导航菜单-->
-       <el-menu :default-active="$route.path" ref="bigmenu" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" unique-opened router>
-         <div v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden && checkContains(item.name)">
-           <el-submenu :index="index+''" v-if="!item.single">
-             <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-             <el-menu-item v-for="child in item.children" @click="addRouter(child, item.path +'/'+ child.path)" :index="item.path +'/'+ child.path" :key="item.path +'/'+ child.path" v-if="!child.hidden && checkContains(child.name)">{{child.name}}</el-menu-item>
-           </el-submenu>
-           <router-link v-else v-for="child in item.children" :index="child.path" :key="child.path" :to="child.path">
-              <div @click="addRouter(child)" class="single-menu">{{child.name}}</div>
-           </router-link>
-         </div>
-       </el-menu>
+        <div class="account">
+          <p><i class="el-icon-user-solid"></i>{{sysUserName}}</p>
+          <div style="height:30px;line-height:30px">
+            <span>555</span>
+            <span style="background: #409eff;padding: 0 5px;border-radius: 5px;">刷新余额</span>
+          </div>
+          <div style="height:30px;"><div class="squre"></div><span>在线</span></div>
+        </div>
+        <el-menu :default-active="$route.path" ref="bigmenu" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" unique-opened router>
+          <div v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden && checkContains(item.name)">
+            <el-submenu :index="index+''" v-if="!item.single">
+              <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+              <el-menu-item v-for="child in item.children" @click="addRouter(child, item.path +'/'+ child.path)" :index="item.path +'/'+ child.path" :key="item.path +'/'+ child.path" v-if="!child.hidden && checkContains(child.name)">{{child.name}}</el-menu-item>
+            </el-submenu>
+            <router-link v-else v-for="child in item.children" :index="child.path" :key="child.path" :to="child.path">
+                <div @click="addRouter(child)" class="single-menu">{{child.name}}</div>
+            </router-link>
+          </div>
+        </el-menu>
      </aside>
      <section class="content-container">
        <div class="grid-content bg-purple-light">
@@ -236,6 +244,22 @@ export default {
     top: 50px;
     bottom: 0;
     overflow: hidden;
+    .squre {
+      float: left;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background: green;
+      margin: 5px 5px 0 0;
+    }
+    .account {
+      width: 160px;
+      background: #d3dfd9;
+      padding-left: 20px;
+      p {
+        margin: 0;
+      }
+    }
     aside {
       flex: 0 0 230px;
       width: 230px;
