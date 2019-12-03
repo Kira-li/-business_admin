@@ -11,12 +11,16 @@ import notFound from '../page/404.vue';
 import index from '../page/index/home.vue';
 import account from '../page/account/detail.vue';
 import addShop from '../page/shop/add.vue';
-import taskLead from '../page/task/lead.vue';
-import taskList from '../page/task/taskList.vue';
-import orderLead from '../page/task/orderLead.vue';
-import orderList from '../page/order/orderList.vue';
-import evaluationList from '../page/order/evaluationList.vue';
-import evaluationWork from '../page/order/evaluationWork.vue';
+import charge from '../page/sales/charge.vue';
+import taskLead from '../page/sales/taskLead.vue';
+import orderLead from '../page/sales/orderLead.vue';
+import taskList from '../page/sales/taskList.vue';
+import collection from '../page/traffic/collection.vue';
+import trafficLead from '../page/traffic/lead.vue';
+import trafficList from '../page/traffic/list.vue';
+import buyShow from '../page/evaluation/buyShow.vue';
+import evaluationOrder from '../page/evaluation/order.vue';
+import orderList from '../page/order/list.vue';
 import workList from '../page/order/workList.vue';
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
@@ -91,7 +95,7 @@ const routes = [
     ]
   },
   {
-    path: '/task',
+    path: '/traffic',
     component: home,
     name: '任务',
     iconCls: 'el-icon-message',
@@ -110,6 +114,52 @@ const routes = [
         path: 'orderLead',
         component: orderLead,
         name: '订单导入'
+      },
+      {
+        path: 'charge',
+        component: charge,
+        name: '收费标准'
+      }
+    ]
+  },
+  {
+    path: '/traffic',
+    component: home,
+    name: '流量任务',
+    iconCls: 'el-icon-message',
+    children: [
+      {
+        path: 'trafficLead',
+        component: trafficLead,
+        name: '流量任务导入'
+      },
+      {
+        path: 'collection',
+        component: collection,
+        name: '收藏加购任务'
+      },
+      {
+        path: 'trafficList',
+        component: trafficList,
+        name: '流量任务列表'
+      }
+    ]
+  },
+  {
+    path: '/evaluation',
+    component: home,
+    name: '评价任务',
+    iconCls: 'el-icon-message',
+    children: [
+      {
+        path: 'buyShow',
+        component: buyShow,
+        name: '买家秀评价'
+      },
+      {
+        path: 'evaluationList',
+        component: evaluationOrder,
+        name: '评价工单'
       }
     ]
   },
@@ -128,16 +178,6 @@ const routes = [
         path: 'workList',
         component: workList,
         name: '工单列表'
-      },
-      {
-        path: 'evaluationList',
-        component: evaluationList,
-        name: '评价列表'
-      },
-      {
-        path: 'evaluationWork',
-        component: evaluationWork,
-        name: '评价工单'
       }
     ]
   }
