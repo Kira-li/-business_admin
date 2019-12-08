@@ -1,24 +1,46 @@
 <template>
 <div class="container-box">
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-      <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-      <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-      <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-  </el-tabs>
+  <el-card class="box-card">
+      <div slot="header" class="clearfix">
+          <div class="box-card-header" style="background: #b3ffd9;" >任务导入</div>
+      </div>
+      <el-upload
+        class="upload"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        multiple
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="fileList">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">支持csv,xlsl,xlsm,xls,xltm格式文件</div>
+      </el-upload>
+  </el-card>
 </div>
 </template>
 <script>
 export default {
   data () {
     return {
-        activeName: 'second'
+        activeName: 'second',
+        fileList: []
     };
   },
   methods: {
-    handleClick (tab, event) {
-        console.log(tab, event);
-    }
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      }
   }
 };
 </script>
