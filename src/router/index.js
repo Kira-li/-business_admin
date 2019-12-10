@@ -10,6 +10,8 @@ import home from '../page/home.vue';
 import notFound from '../page/404.vue';
 import index from '../page/index/home.vue';
 import account from '../page/account/detail.vue';
+import rates from '../page/account/rates.vue';
+import recharge from '../page/account/recharge.vue';
 import addShop from '../page/shop/add.vue';
 import charge from '../page/sales/charge.vue';
 import taskLead from '../page/sales/taskLead.vue';
@@ -71,26 +73,36 @@ const routes = [
   {
     path: '/account',
     component: home,
-    name: '账户',
+    name: '财务管理',
     iconCls: 'el-icon-message',
     children: [
       {
+        path: 'recharge',
+        component: recharge,
+        name: '充值中心'
+      },
+      {
+        path: 'rates',
+        component: rates,
+        name: '收费标准'
+      },
+      {
         path: 'detail',
         component: account,
-        name: '账户详情'
+        name: '资金明细'
       }
     ]
   },
   {
     path: '/shop',
     component: home,
-    name: '店铺',
+    name: '店铺管理',
     iconCls: 'el-icon-message',
     children: [
       {
-        path: 'add',
+        path: 'manage',
         component: addShop,
-        name: '添加店铺'
+        name: '店铺管理'
       }
     ]
   },
