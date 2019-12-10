@@ -13,17 +13,20 @@ import account from '../page/account/detail.vue';
 import rates from '../page/account/rates.vue';
 import recharge from '../page/account/recharge.vue';
 import addShop from '../page/shop/add.vue';
-import charge from '../page/sales/charge.vue';
-import taskLead from '../page/sales/taskLead.vue';
-import orderLead from '../page/sales/orderLead.vue';
-import taskList from '../page/sales/taskList.vue';
-import collection from '../page/traffic/collection.vue';
-import trafficLead from '../page/traffic/lead.vue';
-import trafficList from '../page/traffic/list.vue';
-import buyShow from '../page/evaluation/buyShow.vue';
-import evaluationOrder from '../page/evaluation/order.vue';
-import orderList from '../page/order/list.vue';
-import workList from '../page/order/workList.vue';
+import newFlow from '../page/plan/newFlow.vue';
+import flowPlan from '../page/plan/flowPlan.vue';
+import newSell from '../page/plan/newSell.vue';
+import sellPlan from '../page/plan/sellPlan.vue';
+import checkOrder from '../page/sales/checkOrder.vue';
+import collectionOrder from '../page/sales/collectionOrder.vue';
+import complaintOrder from '../page/sales/complaintOrder.vue';
+import completeOrder from '../page/sales/completeOrder.vue';
+import evaluationOrder from '../page/sales/evaluateOrder.vue';
+import failOrder from '../page/sales/failOrder.vue';
+import checkTask from '../page/browse/checkTask.vue';
+import complaintTask from '../page/browse/complaintTask.vue';
+import completeTask from '../page/browse/completeTask.vue';
+import failTask from '../page/browse/failTask.vue';
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
@@ -61,7 +64,7 @@ const routes = [
     path: '/index',
     component: home,
     name: '首页',
-    iconCls: 'el-icon-message', // 图标样式class
+    iconCls: 'el-icon-s-home', // 图标样式class
     children: [
       {
         path: 'home',
@@ -71,10 +74,104 @@ const routes = [
     ]
   },
   {
+    path: '/plan',
+    component: home,
+    name: '计划管理',
+    iconCls: 'el-icon-tickets',
+    children: [
+      {
+        path: 'newSell',
+        component: newSell,
+        name: '新建销量计划'
+      },
+      {
+        path: 'newFlow',
+        component: newFlow,
+        name: '新建流量计划'
+      },
+      {
+        path: 'sellPlan',
+        component: sellPlan,
+        name: '销量计划列表'
+      },
+      {
+        path: 'flowPlan',
+        component: flowPlan,
+        name: '流量计划列表'
+      }
+    ]
+  },
+  {
+    path: '/sales',
+    component: home,
+    name: '销量任务管理',
+    iconCls: 'el-icon-notebook-1',
+    children: [
+      {
+        path: 'checkOrder',
+        component: checkOrder,
+        name: '待审核订单'
+      },
+      {
+        path: 'completeOrder',
+        component: completeOrder,
+        name: '已完成订单'
+      },
+      {
+        path: 'evaluationOrder',
+        component: evaluationOrder,
+        name: '评价订单'
+      },
+      {
+        path: 'complaintOrder',
+        component: complaintOrder,
+        name: '投诉订单'
+      },
+      {
+        path: 'collectionOrder',
+        component: collectionOrder,
+        name: '强制催收订单'
+      },
+      {
+        path: 'failOrder',
+        component: failOrder,
+        name: '审核失败订单'
+      }
+    ]
+  },
+  {
+    path: '/browse',
+    component: home,
+    name: '浏览任务管理',
+    iconCls: 'el-icon-message',
+    children: [
+      {
+        path: 'checkTask',
+        component: checkTask,
+        name: '待审核任务'
+      },
+      {
+        path: 'completeTask',
+        component: completeTask,
+        name: '已完成任务'
+      },
+      {
+        path: 'complaintTask',
+        component: complaintTask,
+        name: '投诉任务'
+      },
+      {
+        path: 'failTask',
+        component: failTask,
+        name: '审核失败任务'
+      }
+    ]
+  },
+  {
     path: '/account',
     component: home,
     name: '财务管理',
-    iconCls: 'el-icon-message',
+    iconCls: 'el-icon-bank-card',
     children: [
       {
         path: 'recharge',
@@ -97,99 +194,12 @@ const routes = [
     path: '/shop',
     component: home,
     name: '店铺管理',
-    iconCls: 'el-icon-message',
+    iconCls: 'el-icon-office-building',
     children: [
       {
         path: 'manage',
         component: addShop,
         name: '店铺管理'
-      }
-    ]
-  },
-  {
-    path: '/traffic',
-    component: home,
-    name: '任务',
-    iconCls: 'el-icon-message',
-    children: [
-      {
-        path: 'taskLead',
-        component: taskLead,
-        name: '任务导入'
-      },
-      {
-        path: 'taskList',
-        component: taskList,
-        name: '任务列表'
-      },
-      {
-        path: 'orderLead',
-        component: orderLead,
-        name: '订单导入'
-      },
-      {
-        path: 'charge',
-        component: charge,
-        name: '收费标准'
-      }
-    ]
-  },
-  {
-    path: '/traffic',
-    component: home,
-    name: '流量任务',
-    iconCls: 'el-icon-message',
-    children: [
-      {
-        path: 'trafficLead',
-        component: trafficLead,
-        name: '流量任务导入'
-      },
-      {
-        path: 'collection',
-        component: collection,
-        name: '收藏加购任务'
-      },
-      {
-        path: 'trafficList',
-        component: trafficList,
-        name: '流量任务列表'
-      }
-    ]
-  },
-  {
-    path: '/evaluation',
-    component: home,
-    name: '评价任务',
-    iconCls: 'el-icon-message',
-    children: [
-      {
-        path: 'buyShow',
-        component: buyShow,
-        name: '买家秀评价'
-      },
-      {
-        path: 'evaluationList',
-        component: evaluationOrder,
-        name: '评价工单'
-      }
-    ]
-  },
-  {
-    path: '/order',
-    component: home,
-    name: '订单',
-    iconCls: 'el-icon-message',
-    children: [
-      {
-        path: 'orderList',
-        component: orderList,
-        name: '订单列表'
-      },
-      {
-        path: 'workList',
-        component: workList,
-        name: '工单列表'
       }
     ]
   }
