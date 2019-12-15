@@ -17,11 +17,10 @@ export default {
   },
   methods: {
     handleClick (tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
     }
   }
 };
 </script>
-
 <style lang="css">
 </style>
