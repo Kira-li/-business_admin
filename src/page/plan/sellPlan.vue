@@ -20,6 +20,12 @@
       <el-form-item label="任务类型：">
         <el-select v-model="formItem.type">
           <el-option value="all" label="全部任务"></el-option>
+          <el-option value="1" label="搜素下单任务"></el-option>
+          <el-option value="2" label="淘口令下单任务"></el-option>
+          <el-option value="3" label="预约增权单"></el-option>
+          <el-option value="4" label="二维码下单任务"></el-option>
+          <el-option value="5" label="直播入口下单任务"></el-option>
+          <el-option value="6" label="抖音入口下单任务"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="起止时间：">
@@ -44,7 +50,6 @@
           <el-radio-button label="5">终止计划</el-radio-button>
           <el-radio-button label="6">执行完成</el-radio-button>
         </el-radio-group>
-        <el-button type="success" @click="planExport" style="margin-left: 10px;">一键导入计划</el-button>
     </div>
     <div style="margin-top:10px;">
          <el-table :data="tableData" border style="width: 100%">
