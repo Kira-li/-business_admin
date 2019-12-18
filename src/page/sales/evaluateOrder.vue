@@ -66,7 +66,7 @@
           <el-radio-button label="6">超时未操作</el-radio-button>
           <el-radio-button label="7">已撤销</el-radio-button>
         </el-radio-group>
-    </div>
+      </div>
     <div style="margin-top:10px;">
          <el-table :data="tableData" border style="width: 100%">
           <el-table-column prop="shopName" label="邀请时间" align="center"></el-table-column>
