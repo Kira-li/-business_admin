@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 // 请求数据正常状态
 const ajaxMy = axios.create({
-  baseURL: process.env.BASE_API,
+  baseURL: "http://125.120.13.62:18080/",
   timeout: 5000
 });
 
@@ -15,7 +15,7 @@ ajaxMy.interceptors.request.use(config => {
       data.url = data.url + "&t=" + Date.parse(new Date());
   }
   config.headers["Cache-Control"] = "no-cache";
-//   config.headers["Authorization"] = getToken(); // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+  config.headers["Authorization"] = sessionStorage.getItem("AUTH_TOOKEN"); // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
   config = data;
   return config;
 }, error => {

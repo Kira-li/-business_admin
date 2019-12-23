@@ -8,7 +8,7 @@
         label-width="80px"
         class="regesiter-container"
       >
-        <el-button type="primary" size="mini" icon="el-icon-back" class="back" @click="goBack">返回</el-button>
+      <el-button type="primary" size="mini" icon="el-icon-back" class="back" @click="goBack">返回</el-button>
         <el-tabs v-model="activeName">
           <el-tab-pane label="注册" name="first">
                 <el-form-item prop="account" label="用户名">
@@ -20,18 +20,18 @@
                 <el-form-item prop="checkCommn" label="确认密码">
                   <el-input type="password" v-model="ruleForm.checkRepass" placeholder="确认密码"></el-input>
                 </el-form-item>
-                <el-form-item prop="checkCommn" label="手机号">
+                <!--<el-form-item prop="checkCommn" label="手机号">
                   <el-input type="text" v-model="ruleForm.phone" placeholder="手机号"></el-input>
                 </el-form-item>
                 <el-form-item prop="checkCommn" label="验证码">
                   <el-input type="text" v-model="ruleForm.code" placeholder="验证码"></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item prop="checkCommn" label="邀请码">
                   <el-input type="text" v-model="ruleForm.inviteCode" placeholder="邀请码"></el-input>
                 </el-form-item>
-                <el-button type="primary" style="width:100%;" @click="login" :loading="logining">注册</el-button>
+                <el-button type="primary" style="width:100%;" @click="regesiter" :loading="logining">注册</el-button>
           </el-tab-pane>
-          <el-tab-pane label="店铺信息" name="second">
+          <!--<el-tab-pane label="店铺信息" name="second">
               <el-form-item prop="checkCommn" label="店铺名称">
                   <el-input type="text" v-model="ruleForm.name" placeholder="店铺名称"></el-input>
                 </el-form-item>
@@ -63,13 +63,14 @@
                   <el-input type="text" v-model="ruleForm.shopType" placeholder="店铺主营类目"></el-input>
                 </el-form-item>
                 <el-button type="primary" style="width:100%;" @click="login" :loading="logining">添加店铺</el-button>
-          </el-tab-pane>
+          </el-tab-pane>-->
         </el-tabs>
       </el-form>
     </div>
 </template>
 
 <script>
+import ajaxMy from "@/config/request.js";
 export default {
   props: {},
   data () {
@@ -131,7 +132,13 @@ export default {
       this.$router.push({ path: "/login" });
     },
     regesiter () {
-      this.$router.push({ path: "/regesiter" });
+      ajaxMy.post("/api/v1/user/register/vendor", {
+        username: this.ruleForm.account,
+        password: this.ruleForm.checkPass,
+        inviteCode: this.ruleForm.inviteCode
+      }).then((res) => {
+        console.log(res);
+      });
     },
     findPwd () {
       this.$router.push({ path: "/changepwd" });

@@ -15,7 +15,7 @@
                 <el-dropdown trigger="hover">
                     <span class="el-dropdown-link userinfo-inner">{{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>我的消息</el-dropdown-item>
+                        <el-dropdown-item @click.native="changePwdFun">修改密码</el-dropdown-item>
                         <el-dropdown-item>设置</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logoutFun">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -64,12 +64,35 @@
      </section>
    </el-col>
  </el-row>
+ <el-dialog
+  title="修改密码"
+  :visible.sync="dialogVisible"
+  width="30%">
+  <el-form label-position="left" label-width="80px" :model="formLabelAlign">
+    <el-form-item label="用户名">
+      <el-input v-model="formLabelAlign.name"></el-input>
+    </el-form-item>
+    <el-form-item label="旧密码">
+      <el-input v-model="formLabelAlign.oldPwd" show-password></el-input>
+    </el-form-item>
+    <el-form-item label="新密码">
+      <el-input v-model="formLabelAlign.pwd" show-password></el-input>
+    </el-form-item>
+    <el-form-item label="确认新密码">
+      <el-input v-model="formLabelAlign.repwd" show-password></el-input>
+    </el-form-item>
+  </el-form>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="changPwd">确 定</el-button>
+  </span>
+</el-dialog>
 </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-
+import ajaxMy from "@/config/request.js";
 import * as types from "../store/mutation-types";
 export default {
   components: {},
@@ -79,7 +102,14 @@ export default {
       sysUserName: "",
       activepath: "",
       arry: [],
-      treeArry: []
+      treeArry: [],
+      formLabelAlign: {
+        name: "",
+        oldPwd: "",
+        pwd: "",
+        repwd: ""
+      },
+      dialogVisible: false
     };
   },
   watch: {
@@ -88,17 +118,28 @@ export default {
     }
   },
   methods: {
+    changePwdFun () {
+      this.dialogVisible = true;
+    },
+    changPwd () {
+      ajaxMy.put("/api/v1/user/current", {
+        oldPwd: this.formLabelAlign.oldPwd,
+        newPwd: this.formLabelAlign.pwd
+      }).then((res) => {
+        console.log(res);
+      });
+    },
     // 退出登录
     logoutFun: function () {
       var _this = this;
       this.$confirm("确认退出吗?", "提示", {
         // type: 'warning'
-      })
-        .then(() => {
-          sessionStorage.removeItem("user");
-          _this.$router.push("/login");
-        })
-        .catch(() => {});
+      }).then(() => {
+          ajaxMy.post("/api/v1/user/logout").then((res) => {
+            sessionStorage.removeItem("user");
+            _this.$router.push("/login");
+          });
+      }).catch(() => {});
     },
     // 往tab页添加router
     addRouter (data, path) {
@@ -173,7 +214,7 @@ export default {
     var user = sessionStorage.getItem("user");
     if (user) {
       user = JSON.parse(user);
-      this.sysUserName = user.userName || "";
+      this.sysUserName = user.username || "";
     }
   }
 };

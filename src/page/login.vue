@@ -18,7 +18,7 @@
         </el-form-item>
         <div style="height:40px" class="check_pwd">
           <el-checkbox click="remberuser" v-model="checked" checked class="remember" style="height:40px">记住密码</el-checkbox>
-          <span class="find_pwd" @click="findPwd">找回密码</span>
+          <!--<span class="find_pwd" @click="findPwd">密码</span>-->
           <span class="find_pwd" @click="regesiter" style="margin-right:20px">账号注册</span>
         </div>
         <el-button type="primary" style="width:100%;" @click="login" :loading="logining">登录</el-button>
@@ -31,6 +31,7 @@
 import { mapMutations } from "vuex";
 // import * as commonApi from "api/common";
 import * as types from "../store/mutation-types";
+import ajaxMy from "@/config/request.js";
 export default {
   props: {},
   data () {
@@ -68,7 +69,6 @@ export default {
   },
   methods: {
     regesiter () {
-      console.log(3333);
       this.$router.push({ path: "/regesiter" });
     },
     findPwd () {
@@ -81,42 +81,21 @@ export default {
           // 模拟登录
           setTimeout(() => {
             const params = {
-              userName: this.ruleForm.account,
-              password: this.ruleForm.checkPass
+              username: this.ruleForm.account,
+              password: this.ruleForm.checkPass,
+              timeout: 60 * 60
             };
-            sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
-            this.logining = false;
-            this.$router.push({ path: "/index/home" }); // 去主页
+            ajaxMy.post("/api/v1/user/login", params).then((res) => {
+              console.log(res);
+              if (res.data.code === "200") {
+                sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
+                sessionStorage.setItem("AUTH_TOOKEN", res.headers.authorization); // session存储用户信息
+                this.logining = false;
+                this.$router.push({ path: "/index/home" }); // 去主页
+              }
+            });
           }, 1000);
-          // const params = {
-          //   userName: this.ruleForm.account,
-          //   password: this.ruleForm.checkPass
-          // };
-          // commonApi.loginUserNo(params).then(res => {
-          //     let { data } = res;
-          //     this.logining = false;
-          //     if (data.success === true) {
-          //       this.$router.push({ path: "/declare/ordermanage" });  // 去主页
-          //       this.setTreeData(data.data); // 状态存储菜单节点
-          //       this.setToken(data.value); // 状态存储token
-          //       sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
-          //       sessionStorage.setItem("token", data.value); // session存储token
-          //       // 记住密码操作
-          //       if (this.checked) {
-          //         localStorage.setItem('userName', params.userName)
-          //         localStorage.setItem('password', params.password)
-          //       } else {
-          //         localStorage.clear();
-          //       }
-          //     } else {
-          //       this.$message.error(data.message);
-          //     }
-          //   })
-          //   .catch(() => {
-          //     this.$message.error("对不起,连接服务器异常,请稍后再试!");
-          //   });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
