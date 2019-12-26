@@ -16,11 +16,11 @@
     <el-col :span="12">
       <div class="accout_detail"><div>当前冻结余额(元)：<strong>{{account.freeze}}</strong></div></div>
       <el-card>
-        <div class="card_mid">
-          <div><strong>第二步：确认转账金额</strong></div>
+        <div style="display: table;margin: 0 auto;">
+          <div style="display: table;margin: 0 auto;padding-bottom: 10px;"><strong>第二步：确认转账金额</strong></div>
           <el-form :model="formItem"  label-width="90px">
             <el-form-item label="转账金额">
-              <el-input v-model="formItem.money" placeholder="转账金额"></el-input>
+              <el-input v-model="formItem.money" style="width: 217px" placeholder="转账金额"></el-input>
             </el-form-item>
             <el-form-item label="转账银行">
               <el-select v-model="formItem.bank" placeholder="转账银行">
@@ -28,8 +28,11 @@
                 <el-option label="中国工商银行" value="ICBC"></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="银行卡卡号">
+              <el-input v-model="formItem.cardNumber" style="width: 217px" placeholder="银行卡卡号"></el-input>
+            </el-form-item>
             <el-form-item label="银行卡姓名">
-              <el-input v-model="formItem.name" :disabled="true" placeholder="银行卡姓名"></el-input>
+              <el-input v-model="formItem.name" style="width: 217px" placeholder="银行卡姓名"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="mini" @click="onCharge" style="margin-top:10px">确定充值</el-button>
@@ -84,7 +87,8 @@ export default {
         formItem: {
           money: 33,
           bank: "BOC",
-          name: "lisi"
+          name: "",
+          cardNumber: ""
         },
         tableData: [],
         tablePage: {
@@ -103,6 +107,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-card__body {
+  padding: 0;
+}
 .accout_detail {
   width: 100%;
   height: 40px;
@@ -118,8 +125,12 @@ export default {
 }
 .card_mid {
   height: 210px;
+  font-size: 16px;
+  strong {
+    font-size: 14px;
+  }
   p,div {
-    margin: 10px auto;
+    margin: 15px auto;
     width: 200px;
   }
 }

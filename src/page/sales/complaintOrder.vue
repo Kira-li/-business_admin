@@ -97,6 +97,7 @@ export default {
           completeType: "1",
           completeResult: "1"
         },
+        tableData: [],
         tablePage: {
           page: 2,
           pageSize: 10,

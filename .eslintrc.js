@@ -8,7 +8,7 @@ module.exports = {
     '@vue/standard'
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'error',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     "vue/no-use-v-if-with-v-for": ["error", {

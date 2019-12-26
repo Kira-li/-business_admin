@@ -73,6 +73,7 @@ export default {
           time: null,
           planType: "1"
         },
+        tableData: [],
         tablePage: {
           page: 2,
           pageSize: 10,

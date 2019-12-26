@@ -6,7 +6,8 @@ const state = {
   password: '',
   tabData: [],
   treeData: [],
-  token: ''
+  token: '',
+  url: "http://125.120.13.62:18080"
 };
 
 // getters

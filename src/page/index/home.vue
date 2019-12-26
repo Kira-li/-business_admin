@@ -33,7 +33,7 @@
                     <div class="box-card-header" style="background: #409EFF;">专属客服</div>
                 </div>
                 <div>
-                    <p>圈圈</p>
+                    <p>QQ<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=374228740&site=qq&menu=yes"><img style="width: 30px;" src="../../assets/img/timg.jpg"></a></p>
                     <p>微信号：552251</p>
                 </div>
             </el-card>

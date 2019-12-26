@@ -8,7 +8,7 @@
         label-width="80px"
         class="regesiter-container"
       >
-      <el-button type="primary" size="mini" icon="el-icon-back" class="back" @click="goBack">返回</el-button>
+      <el-button type="primary" size="mini" icon="el-icon-back" class="back" @click="goBack"></el-button>
         <el-tabs v-model="activeName">
           <el-tab-pane label="注册" name="first">
                 <el-form-item prop="account" label="用户名">
@@ -20,13 +20,13 @@
                 <el-form-item prop="checkCommn" label="确认密码">
                   <el-input type="password" v-model="ruleForm.checkRepass" placeholder="确认密码"></el-input>
                 </el-form-item>
-                <!--<el-form-item prop="checkCommn" label="手机号">
+                <el-form-item prop="checkCommn1" label="手机号">
                   <el-input type="text" v-model="ruleForm.phone" placeholder="手机号"></el-input>
                 </el-form-item>
-                <el-form-item prop="checkCommn" label="验证码">
+                <!--<el-form-item prop="checkCommn" label="验证码">
                   <el-input type="text" v-model="ruleForm.code" placeholder="验证码"></el-input>
                 </el-form-item> -->
-                <el-form-item prop="checkCommn" label="邀请码">
+                <el-form-item prop="checkCommn2" label="邀请码">
                   <el-input type="text" v-model="ruleForm.inviteCode" placeholder="邀请码"></el-input>
                 </el-form-item>
                 <el-button type="primary" style="width:100%;" @click="regesiter" :loading="logining">注册</el-button>
@@ -112,7 +112,21 @@ export default {
         checkCommn: [
           {
             required: true,
-            message: "请输入....",
+            message: "请输入确认密码",
+            trigger: "blur"
+          }
+        ],
+        checkCommn1: [
+          {
+            required: true,
+            message: "请输入手机号",
+            trigger: "blur"
+          }
+        ],
+        checkCommn2: [
+          {
+            required: true,
+            message: "请输入邀请码",
             trigger: "blur"
           }
         ]
@@ -135,9 +149,12 @@ export default {
       ajaxMy.post("/api/v1/user/register/vendor", {
         username: this.ruleForm.account,
         password: this.ruleForm.checkPass,
-        inviteCode: this.ruleForm.inviteCode
+        inviteCode: this.ruleForm.inviteCode,
+        phone: this.ruleForm.phone
       }).then((res) => {
-        console.log(res);
+        if (res.data.code === "200") {
+          this.$router.push({ path: "/login" });
+        }
       });
     },
     findPwd () {

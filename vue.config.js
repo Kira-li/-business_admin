@@ -7,7 +7,7 @@ module.exports = {
     productionSourceMap: false,
     publicPath: './',
     outputDir: './dist',
-    lintOnSave: false,
+    lintOnSave: true,
     chainWebpack: (config) => {
         config.resolve.alias
             .set('vue$', 'vue/dist/vue.esm.js')
@@ -29,5 +29,15 @@ module.exports = {
                 return assetFilename.endsWith('.js');
             }
         }
+    },
+    css: {
+        // 是否使用css分离插件 ExtractTextPlugin 生产环境下是true,开发环境下是false
+        extract: true,
+        // 开启 CSS source maps?
+        sourceMap: false,
+        // css预设器配置项
+        loaderOptions: {},
+        // 启用 CSS modules for all css / pre-processor files.
+        requireModuleExtension: false
     }
 };

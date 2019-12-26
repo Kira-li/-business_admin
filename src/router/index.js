@@ -13,6 +13,7 @@ import account from '../page/account/detail.vue';
 import rates from '../page/account/rates.vue';
 import recharge from '../page/account/recharge.vue';
 import addShop from '../page/shop/add.vue';
+import shopList from '../page/shop/shopList.vue';
 import newFlow from '../page/plan/newFlow.vue';
 import flowPlan from '../page/plan/flowPlan.vue';
 import newSell from '../page/plan/newSell.vue';
@@ -199,7 +200,12 @@ const routes = [
       {
         path: 'manage',
         component: addShop,
-        name: '店铺管理'
+        name: '店铺添加'
+      },
+      {
+        path: 'shopList',
+        component: shopList,
+        name: '店铺列表'
       }
     ]
   }

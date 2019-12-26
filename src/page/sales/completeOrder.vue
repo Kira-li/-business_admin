@@ -65,6 +65,7 @@
     </div>
     <div style="margin-top:10px;">
          <el-table :data="tableData" border style="width: 100%">
+          <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="shopName" label="店铺名称" align="center"></el-table-column>
           <el-table-column prop="wwName" label="旺旺号" align="center"></el-table-column>
           <el-table-column prop="examineTime" label="付款金额" align="center"></el-table-column>
@@ -114,6 +115,7 @@ export default {
           time: null,
           planType: "1"
         },
+        tableData: [],
         tablePage: {
           page: 2,
           pageSize: 10,

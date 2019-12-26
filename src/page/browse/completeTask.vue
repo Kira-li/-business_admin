@@ -83,6 +83,7 @@ export default {
           planType: "1",
           completeType: ""
         },
+        tableData: [],
         tablePage: {
           page: 2,
           pageSize: 10,

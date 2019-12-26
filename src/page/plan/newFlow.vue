@@ -1,10 +1,6 @@
 <template>
 <div class="container-box">
-  <el-steps :active="active" finish-status="success">
-    <el-step title="第一步"></el-step>
-    <el-step title="第二步"></el-step>
-  </el-steps>
-  <el-form :model="formItem"  label-width="140px" v-if="active===0">
+  <el-form :model="formItem" :inline="true" label-width="140px">
     <el-form-item label="请选择任务类型：">
       <el-select v-model="formItem.taskType">
         <el-option value="1" label="搜素下单任务"></el-option>
@@ -15,9 +11,13 @@
         <el-option value="6" label="抖音入口下单任务"></el-option>
       </el-select>
     </el-form-item>
+    <el-form-item>
+      <el-button style="margin: 12px 20px 0;" type="success" @click="exportPlan" icon="el-icon-download" size="mini">一键导入计划</el-button>
+      <el-button type="success" style="margin: 0 auto;" size="mini">支付计划</el-button>
+    </el-form-item>
   </el-form>
   <!--搜素下单 -->
-  <div v-if="active===1 && formItem.taskType === '1'">
+  <div v-if="formItem.taskType === '1'">
       <el-form :model="searchFormItem" label-width="130px">
         <el-form-item label="店铺名称：">
             <el-select v-model="searchFormItem.shop">
@@ -186,10 +186,9 @@
               <el-radio v-model="searchFormItem.zqCheck" label="2">是</el-radio>
         </el-form-item>
       </el-form>
-      <div><el-button type="success" style="margin: 0 auto;">支付计划</el-button></div>
   </div>
   <!--二维码 -->
-  <div v-if="active===1 && formItem.taskType === '4'">
+  <div v-if="formItem.taskType === '4'">
     <div class="task_header">
         <el-divider direction="vertical"></el-divider>
         <strong>设置任务信息</strong>
@@ -202,10 +201,15 @@
             <el-row>
                 <el-col :span="8" style="padding-right: 10px;border-right: 1px dashed #333">
                     <el-form-item label="二维码">
-                        <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-                          <i class="el-icon-upload"></i>
-                          <div class="el-upload__text">二维码上传，或<em>点击上传</em></div>
+                        <el-upload
+                            class="upload-demo"
+                            :action="pic.actionUrl"
+                            accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP"
+                            :on-success="handleAvatarSuccess"
+                            :show-file-list="false">
+                            <el-button size="small" type="primary">点击上传二维码</el-button>
                         </el-upload>
+                        <img :src='$store.state.common.url+pic.url'>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8" style="padding-right: 10px;border-right: 1px dashed #333">
@@ -224,7 +228,7 @@
     </el-form>
   </div>
   <!--直播 -->
-  <div v-if="active===1 && formItem.taskType === '5'">
+  <div v-if="formItem.taskType === '5'">
     <div class="task_header">
         <el-divider direction="vertical"></el-divider>
         <strong>设置任务信息</strong>
@@ -256,7 +260,7 @@
     </el-form>
   </div>
   <!--抖音 -->
-  <div v-if="active===1 && formItem.taskType === '6'">
+  <div v-if="formItem.taskType === '6'">
     <div class="task_header">
         <el-divider direction="vertical"></el-divider>
         <strong>设置任务信息</strong>
@@ -287,8 +291,6 @@
         </el-card>
     </el-form>
   </div>
-  <el-button style="margin-top: 12px;" type="success" @click="next">下一步</el-button>
-  <el-button style="margin-top: 12px;" type="success" @click="exportPlan" icon="el-icon-download">一键导入计划</el-button>
   <el-dialog title="导入计划" :visible.sync="exportModel" width="30%">
     <div>
       <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
@@ -336,7 +338,7 @@ export default {
           timeChecked: false,
           timeEnd: null,
           exam: "",
-          useType: 1,
+          useType: "1",
           selcetPlace: "",
           sex: "",
           age: "",
@@ -364,7 +366,11 @@ export default {
           planNum: 1,
           checked: false
         },
-        exportModel: false
+        exportModel: false,
+        pic: {
+          actionUrl: "",
+          url: ""
+        }
     };
   },
   methods: {
@@ -376,6 +382,9 @@ export default {
     },
     exportExam () {
       console.log(111);
+    },
+    handleAvatarSuccess (res, file) {
+      this.pic.url = res.result.url;
     }
   }
 };
