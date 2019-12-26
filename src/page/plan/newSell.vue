@@ -301,10 +301,7 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
-      <div class="export_exm">发布关键词销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布淘口令销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布直播入口销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布抖音入口销量计划模版 <span @click="exportExam">下载模版</span></div>
+      <div class="export_exm">发布销量任务模版 <span @click="exportExam">下载模版</span></div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="exportModel = false">取 消</el-button>
@@ -382,7 +379,7 @@ export default {
       this.exportModel = true;
     },
     exportExam () {
-      console.log(111);
+      window.open("document/销量任务导入模板.xlsx");
     },
     handleAvatarSuccess (res, file) {
       this.pic.url = res.result.url;

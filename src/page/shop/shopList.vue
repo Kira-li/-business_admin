@@ -3,7 +3,8 @@
     <el-row style="height:98%;">
         <el-col :span="16" style="height:100%">
             <el-card shadow>
-                <el-table :data="tableData" border style="width: 100%">
+                <el-table :data="tableData" border style="width: 100%" @row-click="rowClick">
+                    <el-table-column type="selection" width="50"></el-table-column>
                     <el-table-column prop="shopName" label="店铺名称" align="center"></el-table-column>
                     <el-table-column prop="qqNo" label="QQ" align="center"></el-table-column>
                     <el-table-column prop="wechetNo" label="微信" align="center"></el-table-column>
@@ -33,27 +34,27 @@
             <el-card shadow>
                 <div slot="header" class="clearfix" style="height: 40px;line-height: 40px">
                     <span>店铺详情</span>
-                    <el-button style="margin-top: 6px;float: right;" type="primary" size="mini" :disabled="ruleForm.id" @click="edit">修改</el-button>
+                    <el-button style="margin-top: 6px;float: right;" type="primary" size="mini" :disabled="ruleForm.id ==''" @click="edit">修改</el-button>
                 </div>
                 <div>
-                    <el-form :model= "ruleForm" ref="ruleforms" :rules="rules" label-position="right" label-width="126px" class="regesiter-container">
-                        <el-form-item  label="店铺名称" prop="name">
-                            <el-input type="text" v-model="ruleForm.name" placeholder="店铺名称"></el-input>
+                    <el-form :model="ruleForm" ref="ruleforms" :rules="rules" label-position="right" label-width="126px" class="regesiter-container">
+                        <el-form-item  label="店铺名称" prop="shopName">
+                            <el-input type="text" v-model="ruleForm.shopName" placeholder="店铺名称"></el-input>
                         </el-form-item>
-                        <el-form-item  label="QQ" prop="qq">
-                            <el-input type="text" v-model="ruleForm.qq" placeholder="QQ"></el-input>
+                        <el-form-item  label="QQ" prop="qqNo">
+                            <el-input type="text" v-model="ruleForm.qqNo" placeholder="QQ"></el-input>
                         </el-form-item>
-                        <el-form-item  label="微信" prop="weixin">
-                            <el-input type="text" v-model="ruleForm.weixin" placeholder="微信"></el-input>
+                        <el-form-item  label="微信" prop="wechetNo">
+                            <el-input type="text" v-model="ruleForm.wechetNo" placeholder="微信"></el-input>
                         </el-form-item>
                         <!-- <el-form-item  label="手机号">
                         <el-input type="text" v-model="ruleForm.shopPhone" placeholder="手机号"></el-input>
                         </el-form-item> -->
                         <el-form-item  label="店铺负责人" prop="shopOrder">
-                            <el-input type="text" v-model="ruleForm.shopOrder" placeholder="店铺负责人"></el-input>
+                            <el-input type="text" v-model="ruleForm.shopOwner" placeholder="店铺负责人"></el-input>
                         </el-form-item>
                         <el-form-item  label="店铺负责人职位" prop="orderType">
-                            <el-select v-model="ruleForm.orderType">
+                            <el-select v-model="ruleForm.shopOwnerPosition">
                                 <el-option value="boss" label="老板"></el-option>
                                 <el-option value="operation" label="运营"></el-option>
                             </el-select>
@@ -68,14 +69,14 @@
                                 <el-button size="small" type="primary">点击上传</el-button>
                             </el-upload>
                         </el-form-item>
-                        <el-form-item  label="预计每日任务数" prop="taskNum">
-                            <el-input type="text" v-model="ruleForm.taskNum" placeholder="预计每日任务数"></el-input>
+                        <el-form-item  label="预计每日任务数" prop="dailySaleTaskCount">
+                            <el-input type="text" v-model="ruleForm.dailySaleTaskCount" placeholder="预计每日任务数"></el-input>
                         </el-form-item>
-                        <el-form-item label="店铺主营类目" prop="shopType">
-                            <el-input type="text" v-model="ruleForm.shopType" placeholder="店铺主营类目(二级)"></el-input>
+                        <el-form-item label="店铺主营类目" prop="goodsSecondType">
+                            <el-input type="text" v-model="ruleForm.goodsSecondType" placeholder="店铺主营类目(二级)"></el-input>
                         </el-form-item>
-                        <el-form-item  label="邀请人店铺名称" prop="inviteName">
-                            <el-input type="text" v-model="ruleForm.inviteName" placeholder="邀请人店铺名称"></el-input>
+                        <el-form-item  label="邀请人店铺名称" prop="inviterShopName">
+                            <el-input type="text" v-model="ruleForm.inviterShopName" placeholder="邀请人店铺名称"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -92,24 +93,18 @@ export default {
       tableData: [],
       ruleForm: {
           id: "",
-          account: "",
-          checkPass: "",
-          checkRepass: "",
-          phone: "",
-          code: "",
-          name: "",
-          qq: "",
-          weixin: "",
+          shopName: "",
+          qqNo: "",
+          wechetNo: "",
           shopPhone: "",
           shopStandby: "",
           city: "",
-          shopName: "",
           shopWWname: "",
-          shopHerf: "",
-          shopType: "",
-          shopOrder: "",
-          inviteName: "",
-          taskNum: 0,
+          shopOwner: "",
+          shopOwnerPosition: "",
+          dailySaleTaskCount: "",
+          goodsSecondType: "",
+          inviterShopName: 0,
           orderType: "boss",
           shopPic: ""
       },
@@ -118,37 +113,37 @@ export default {
         url: ""
       },
       rules: {
-        name: [{
+        shopName: [{
             required: true,
             message: "请输入店铺名称",
             trigger: ["blur", "change"]
         }],
-        qq: [{
+        qqNo: [{
             required: true,
             message: "请输入QQ号",
             trigger: ["blur", "change"]
         }],
-        weixin: [{
+        wechetNo: [{
             required: true,
             message: "请输入微信号",
             trigger: ["blur", "change"]
         }],
-        shopOrder: [{
+        shopOwner: [{
             required: true,
             message: "请输入店铺负责人",
             trigger: ["blur", "change"]
         }],
-        taskNum: [{
+        dailySaleTaskCount: [{
             required: true,
             message: "请输入每日任务数",
             trigger: ["blur", "change"]
         }],
-        shopType: [{
+        goodsSecondType: [{
             required: true,
             message: "请输入店铺主营类目",
             trigger: ["blur", "change"]
         }],
-        inviteName: [{
+        inviterShopName: [{
             required: true,
             message: "请输入邀请人店铺名称",
             trigger: ["blur", "change"]
@@ -164,8 +159,9 @@ export default {
     getTableData () {
       ajaxMy.get("/api/v1/shop").then((res) => {
         console.log(res);
+        this.tableData = res.data;
         if (res.data.code === "200") {
-            this.tableData = res.data.list;
+            this.tableData = res.data;
         }
       });
     },
@@ -177,20 +173,20 @@ export default {
             if (valid) {
                 if (this.pic.url) {
                     ajaxMy.put("/api/v1/shop/" + this.ruleForm.id, {
-                        goodsSecondType: this.ruleForm.shopType,
-                        inviterShopName: this.ruleForm.inviteName,
-                        qqNo: this.ruleForm.qq,
+                        goodsSecondType: this.ruleForm.goodsSecondType,
+                        inviterShopName: this.ruleForm.inviterShopName,
+                        qqNo: this.ruleForm.qqNo,
                         shopHumanTagUrl: this.pic.url,
-                        shopName: this.ruleForm.name,
-                        shopOwner: this.ruleForm.shopOrder,
-                        shopOwnerPosition: this.ruleForm.orderType,
-                        wechetNo: this.ruleForm.weixin,
-                        dailySaleTaskCount: this.ruleForm.taskNum
+                        shopName: this.ruleForm.shopName,
+                        shopOwner: this.ruleForm.shopOwner,
+                        shopOwnerPosition: this.ruleForm.shopOwnerPosition,
+                        wechetNo: this.ruleForm.wechetNo,
+                        dailySaleTaskCount: this.ruleForm.dailySaleTaskCount
                     }).then((res) => {
                     console.log(res);
                     if (res.data.code === "200") {
                         this.$message({
-                            message: '店铺添加成功',
+                            message: '店铺修改成功',
                             type: 'success'
                         });
                     }
@@ -211,6 +207,10 @@ export default {
                 this.getTableData();
             }
         });
+    },
+    rowClick (row) {
+        this.pic.url = row.shopHumanTagUrl;
+        this.ruleForm = row;
     }
   }
 };
