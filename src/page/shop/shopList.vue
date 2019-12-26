@@ -203,14 +203,14 @@ export default {
     },
     listDel (id) {
         ajaxMy.delete("/api/v1/shop/" + id).then((res) => {
-            if(res.data.code === "200") {
+            if (res.data.code === "200") {
                 this.$message({
                     message: '店铺删除成功',
                     type: 'success'
                 });
                 this.getTableData();
             }
-        })
+        });
     }
   }
 };
