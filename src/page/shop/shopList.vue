@@ -152,16 +152,14 @@ export default {
     };
   },
   mounted () {
-      this.pic.actionUrl = this.$store.state.common.url + "/upload";
+      this.pic.actionUrl = this.$store.state.common.url + "/api/v1/file/upload";
       this.getTableData();
   },
   methods: {
     getTableData () {
       ajaxMy.get("/api/v1/shop").then((res) => {
-        console.log(res);
-        this.tableData = res.data;
-        if (res.data.code === "200") {
-            this.tableData = res.data;
+        if (res.status === 200) {
+            this.tableData = res.data.list;
         }
       });
     },

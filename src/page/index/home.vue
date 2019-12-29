@@ -42,15 +42,21 @@
 </div>
 </template>
 <script>
+import ajaxMy from "@/config/request.js";
 export default {
   data () {
     return {
         activeName: 'second'
     };
   },
+  mounted () {
+      this.getNotice();
+  },
   methods: {
-    handleClick (tab, event) {
-        console.log(tab, event);
+    getNotice () {
+        ajaxMy.get("/api/v1/notice").then((res) => {
+            console.log(res);
+        });
     }
   }
 };

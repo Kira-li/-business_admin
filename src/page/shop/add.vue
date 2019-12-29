@@ -144,7 +144,7 @@ export default {
     };
   },
   mounted () {
-    this.pic.actionUrl = this.$store.state.common.url + "/upload";
+    this.pic.actionUrl = this.$store.state.common.url + "/api/v1/file/upload";
     console.log(this.pic.actionUrl);
   },
   methods: {

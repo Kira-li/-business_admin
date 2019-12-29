@@ -77,6 +77,7 @@
 </div>
 </template>
 <script>
+import ajaxMy from "@/config/request.js";
 export default {
   data () {
     return {
@@ -103,7 +104,12 @@ export default {
         console.log(11);
     },
     query () {
-        console.log(11);
+      ajaxMy.get("/api/v1/sale_task", {
+        page: this.tablePage.page,
+        size: this.tablePage.pageSize
+      }).then((res) => {
+        console.log(res);
+      });
     }
   }
 };

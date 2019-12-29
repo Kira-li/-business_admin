@@ -1,8 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import store from '../store/index';
 // 请求数据正常状态
 const ajaxMy = axios.create({
-  baseURL: "http://125.120.13.62:18080/",
+  baseURL: store.state.common.url,
   timeout: 5000
 });
 

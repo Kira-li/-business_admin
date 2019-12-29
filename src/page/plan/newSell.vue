@@ -4,20 +4,18 @@
     <el-step title="第一步"></el-step>
     <el-step title="第二步"></el-step>
   </el-steps> -->
-  <el-form :model="formItem" :inline="true" label-width="140px" v-if="active===0">
-    <el-form-item label="请选择任务类型：">
+  <el-form :model="formItem" :inline="true" label-width="140px">
+    <el-form-item label="请选择任务类型：" v-if="active===0">
       <el-select v-model="formItem.taskType">
-        <el-option value="1" label="搜素下单任务"></el-option>
-        <el-option value="2" label="淘口令下单任务"></el-option>
-        <el-option value="3" label="预约增权单（只有接过店铺流量的买手才能接单下单）"></el-option>
-        <el-option value="4" label="二维码下单任务"></el-option>
-        <el-option value="5" label="直播入口下单任务"></el-option>
-        <el-option value="6" label="抖音入口下单任务"></el-option>
+        <el-option value="taokouling" label="淘口令流量计划"></el-option>
+        <el-option value="realplay" label="直播入口流量计划"></el-option>
+        <el-option value="keyword" label="关键词流量计划"></el-option>
+        <el-option value="douyin" label="抖音入口流量计划"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item>
       <el-button style="margin: 12px 20px 0;" type="success" @click="exportPlan" icon="el-icon-download" size="mini">一键导入计划</el-button>
-      <el-button type="success"  size="mini">支付计划</el-button>
+      <!-- <el-button type="success" style="margin: 0 auto;" size="mini">支付计划</el-button> -->
     </el-form-item>
   </el-form>
   <!--搜素下单 -->
@@ -295,9 +293,9 @@
         </el-card>
     </el-form>
   </div>
-  <el-dialog title="导入计划" :visible.sync="exportModel" width="30%">
+  <el-dialog title="导入计划" :visible.sync="exportModel" width="40%">
     <div>
-      <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+      <el-upload class="upload-demo" drag :action="pic.actionUrl" accept=".xlsx" :headers="pic.headers">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
@@ -311,12 +309,13 @@
 </div>
 </template>
 <script>
+// import ajaxMy from "@/config/request.js";
 export default {
   data () {
     return {
-        active: 0,
+        active: 1,
         formItem: {
-          taskType: "1"
+          taskType: "taokouling"
         },
         searchFormItem: {
           shop: "1",
@@ -369,6 +368,9 @@ export default {
         },
         exportModel: false,
         pic: {
+          headers: {
+            Authorization: sessionStorage.getItem("AUTH_TOOKEN")
+          },
           actionUrl: "",
           url: ""
         }
@@ -376,10 +378,11 @@ export default {
   },
   methods: {
     exportPlan () {
+      this.pic.actionUrl = this.$store.state.common.url + "/api/v1/sale_task/upload";
       this.exportModel = true;
     },
     exportExam () {
-      window.open("document/销量任务导入模板.xlsx");
+      window.open(this.$store.state.common.url + "/api/v1/file/download/templete/sale_task");
     },
     handleAvatarSuccess (res, file) {
       this.pic.url = res.result.url;

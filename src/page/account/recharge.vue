@@ -6,10 +6,10 @@
       <el-card>
         <div class="card_mid border_rad">
           <div><strong>第一步：请先转账到以下账户</strong></div>
-          <p>银行卡号：{{bank.number}}</p>
-          <p>户名：{{bank.name}}</p>
+          <p>银行卡号：{{bank.accountNumber}}</p>
+          <p>户名：{{bank.accountName}}</p>
           <p>开户行：{{bank.bankName}}</p>
-          <p>支行：{{bank.branch}}</p>
+          <p>支行：{{bank.subbranchBankName}}</p>
         </div>
       </el-card>
     </el-col>
@@ -22,17 +22,25 @@
             <el-form-item label="转账金额">
               <el-input v-model="formItem.money" style="width: 217px" placeholder="转账金额"></el-input>
             </el-form-item>
-            <el-form-item label="转账银行">
+            <!--<el-form-item label="转账银行">
               <el-select v-model="formItem.bank" placeholder="转账银行">
                 <el-option label="中国银行" value="BOC"></el-option>
                 <el-option label="中国工商银行" value="ICBC"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="银行卡卡号">
               <el-input v-model="formItem.cardNumber" style="width: 217px" placeholder="银行卡卡号"></el-input>
             </el-form-item>
-            <el-form-item label="银行卡姓名">
+            <!--<el-form-item label="银行卡姓名">
               <el-input v-model="formItem.name" style="width: 217px" placeholder="银行卡姓名"></el-input>
+            </el-form-item> -->
+            <el-form-item label="交易时间">
+              <el-date-picker
+                v-model="formItem.transationTime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
+                placeholder="交易时间">
+              </el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="mini" @click="onCharge" style="margin-top:10px">确定充值</el-button>
@@ -70,7 +78,9 @@
 </div>
 </template>
 <script>
+import ajaxMy from "@/config/request.js";
 export default {
+  name: "recharge",
   data () {
     return {
         activeName: 'second',
@@ -79,16 +89,17 @@ export default {
           freeze: 0
         },
         bank: {
-          number: 222222,
-          name: "lisi",
+          accountNumber: 222222,
+          accountName: "lisi",
           bankName: "中国银行",
-          branch: "杭州支行"
+          subbranchBankName: "杭州支行"
         },
         formItem: {
           money: 33,
           bank: "BOC",
           name: "",
-          cardNumber: ""
+          cardNumber: "",
+          transationTime: null
         },
         tableData: [],
         tablePage: {
@@ -98,9 +109,49 @@ export default {
         }
     };
   },
+  mounted () {
+      this.getBank();
+      this.getRecharge();
+      this.getUserMoneyLog();
+      ajaxMy.get("/api/v1/user/recharge/").then((res) => {
+        console.log(res);
+      });
+  },
   methods: {
+    getBank () {
+      ajaxMy.get("/api/v1/bank").then((res) => {
+        console.log(res);
+      });
+    },
+    getRecharge () {
+      ajaxMy.get("/api/vi/bank/platform").then((res) => {
+        this.bank = res.data;
+      });
+    },
     onCharge () {
-      console.log(11);
+      ajaxMy.post("/api/v1/user/recharge", {
+        bankAccount: this.formItem.cardNumber,
+        transationAmount: this.formItem.money,
+        transationType: 1,
+        transationTime: this.formItem.transationTime
+      }).then((res) => {
+        console.log(res);
+        if (res.data.code === "200") {
+          this.$message({
+              message: '提交成功，待管理员审核',
+              type: 'success'
+          });
+        };
+      });
+    },
+    getUserMoneyLog () {
+      ajaxMy.get("/api/v1/user/user_Money_Log", {
+        params: {
+          transationType: 1
+        }
+      }).then((res) => {
+        console.log(res);
+      })
     }
   }
 };

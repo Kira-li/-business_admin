@@ -61,10 +61,11 @@ export default {
     };
   },
   created () {
+    this.checked = localStorage.getItem('pwdChecked') === 'true';
     this.ruleForm.checkPass = "";
-    if (localStorage.getItem('userName')) { // 记住密码操作
-      this.ruleForm.account = localStorage.getItem('userName');
-      this.ruleForm.checkPass = localStorage.getItem('password');
+    if (this.checked) { // 记住密码操作
+      this.ruleForm.account = this.$store.state.common.username;
+      this.ruleForm.checkPass = this.$store.state.common.password;
     }
   },
   methods: {
@@ -86,12 +87,20 @@ export default {
               timeout: 60 * 60
             };
             ajaxMy.post("/api/v1/user/login", params).then((res) => {
-              console.log(res);
               if (res.data.code === "200") {
+                localStorage.setItem("pwdChecked", JSON.stringify(this.checked)); // 记住密码
+                this.$store.commit('SET_USERNAME', this.ruleForm.account);
+                this.$store.commit('SET_PASSWORD', this.ruleForm.checkPass);
                 sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
                 sessionStorage.setItem("AUTH_TOOKEN", res.headers.authorization); // session存储用户信息
                 this.logining = false;
                 this.$router.push({ path: "/index/home" }); // 去主页
+              } else {
+                this.logining = false;
+                this.$message({
+                    message: res.data.message,
+                    type: 'error'
+                });
               }
             });
           }, 1000);

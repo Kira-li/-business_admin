@@ -3,17 +3,15 @@
   <el-form :model="formItem" :inline="true" label-width="140px">
     <el-form-item label="请选择任务类型：">
       <el-select v-model="formItem.taskType">
-        <el-option value="1" label="搜素下单任务"></el-option>
-        <el-option value="2" label="淘口令下单任务"></el-option>
-        <el-option value="3" label="预约增权单（只有接过店铺流量的买手才能接单下单）"></el-option>
-        <el-option value="4" label="二维码下单任务"></el-option>
-        <el-option value="5" label="直播入口下单任务"></el-option>
-        <el-option value="6" label="抖音入口下单任务"></el-option>
+        <el-option value="taokouling" label="淘口令流量计划"></el-option>
+        <el-option value="realplay" label="直播入口流量计划"></el-option>
+        <el-option value="keyword" label="关键词流量计划"></el-option>
+        <el-option value="douyin" label="抖音入口流量计划"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item>
       <el-button style="margin: 12px 20px 0;" type="success" @click="exportPlan" icon="el-icon-download" size="mini">一键导入计划</el-button>
-      <el-button type="success" style="margin: 0 auto;" size="mini">支付计划</el-button>
+      <!-- <el-button type="success" style="margin: 0 auto;" size="mini">支付计划</el-button> -->
     </el-form-item>
   </el-form>
   <!--搜素下单 -->
@@ -293,14 +291,14 @@
   </div>
   <el-dialog title="导入计划" :visible.sync="exportModel" width="30%">
     <div>
-      <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+      <el-upload class="upload-demo" drag :action="pic.actionUrl" accept=".xlsx" :headers="pic.headers">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
-      <div class="export_exm">发布关键词销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布淘口令销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布直播入口销量计划模版 <span @click="exportExam">下载模版</span></div>
-      <div class="export_exm">发布抖音入口销量计划模版 <span @click="exportExam">下载模版</span></div>
+      <div class="export_exm" v-if="formItem.taskType ==='taokouling'">淘口令流量计划模版 <span @click="exportExam">下载模版</span></div>
+      <div class="export_exm" v-if="formItem.taskType ==='realplay'">直播入口流量计划模版 <span @click="exportExam">下载模版</span></div>
+      <div class="export_exm" v-if="formItem.taskType ==='keyword'">关键词流量计划模版 <span @click="exportExam">下载模版</span></div>
+      <div class="export_exm" v-if="formItem.taskType ==='douyin'">抖音入口流量计划模版 <span @click="exportExam">下载模版</span></div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="exportModel = false">取 消</el-button>
@@ -315,7 +313,7 @@ export default {
     return {
         active: 0,
         formItem: {
-          taskType: "1"
+          taskType: "taokouling"
         },
         searchFormItem: {
           shop: "1",
@@ -374,14 +372,12 @@ export default {
     };
   },
   methods: {
-    next () {
-        if (this.active++ > 1) this.active = 0;
-    },
     exportPlan () {
+      this.pic.actionUrl = this.$store.state.common.url + "/api/v1/flow_task/upload";
       this.exportModel = true;
     },
     exportExam () {
-      console.log(111);
+      window.open(this.$store.state.common.url + "/api/v1/file/download/templete/flow_task/" + this.formItem.taskType);
     },
     handleAvatarSuccess (res, file) {
       this.pic.url = res.result.url;

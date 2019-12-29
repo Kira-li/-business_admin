@@ -11,7 +11,7 @@ import router from "./router";
 
 Vue.use(ElementUI);
 Vue.use(Router);
-
+console.log(store);
 Vue.config.productionTip = false;
  /**
   * 判断当前是否登录，未登录不能跳转路由

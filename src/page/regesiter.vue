@@ -17,16 +17,16 @@
                 <el-form-item prop="checkPass" label="密码">
                   <el-input type="password" v-model="ruleForm.checkPass" placeholder="密码"></el-input>
                 </el-form-item>
-                <el-form-item prop="checkCommn" label="确认密码">
+                <el-form-item prop="checkRepass" label="确认密码">
                   <el-input type="password" v-model="ruleForm.checkRepass" placeholder="确认密码"></el-input>
                 </el-form-item>
-                <el-form-item prop="checkCommn1" label="手机号">
+                <el-form-item prop="phone" label="手机号">
                   <el-input type="text" v-model="ruleForm.phone" placeholder="手机号"></el-input>
                 </el-form-item>
                 <!--<el-form-item prop="checkCommn" label="验证码">
                   <el-input type="text" v-model="ruleForm.code" placeholder="验证码"></el-input>
                 </el-form-item> -->
-                <el-form-item prop="checkCommn2" label="邀请码">
+                <el-form-item prop="inviteCode" label="邀请码">
                   <el-input type="text" v-model="ruleForm.inviteCode" placeholder="邀请码"></el-input>
                 </el-form-item>
                 <el-button type="primary" style="width:100%;" @click="regesiter" :loading="logining">注册</el-button>
@@ -109,21 +109,21 @@ export default {
             trigger: "blur"
           }
         ],
-        checkCommn: [
+        checkRepass: [
           {
             required: true,
             message: "请输入确认密码",
             trigger: "blur"
           }
         ],
-        checkCommn1: [
+        phone: [
           {
             required: true,
             message: "请输入手机号",
             trigger: "blur"
           }
         ],
-        checkCommn2: [
+        inviteCode: [
           {
             required: true,
             message: "请输入邀请码",
