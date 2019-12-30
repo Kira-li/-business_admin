@@ -10,6 +10,7 @@
           <p>户名：{{bank.accountName}}</p>
           <p>开户行：{{bank.bankName}}</p>
           <p>支行：{{bank.subbranchBankName}}</p>
+          <div><el-button type="primary" size="mini" @click="addCard" style="margin-top:10px">添加个人银行卡</el-button></div>
         </div>
       </el-card>
     </el-col>
@@ -17,7 +18,7 @@
       <div class="accout_detail"><div>当前冻结余额(元)：<strong>{{account.freeze}}</strong></div></div>
       <el-card>
         <div style="display: table;margin: 0 auto;">
-          <div style="display: table;margin: 0 auto;padding-bottom: 10px;"><strong>第二步：确认转账金额</strong></div>
+          <div style="display: table;margin: 0 auto;padding-bottom: 10px;"><strong>第二步：确认转账金额(请勿通过支付宝充值)</strong></div>
           <el-form :model="formItem"  label-width="90px">
             <el-form-item label="转账金额">
               <el-input v-model="formItem.money" style="width: 217px" placeholder="转账金额"></el-input>
@@ -29,11 +30,16 @@
               </el-select>
             </el-form-item> -->
             <el-form-item label="银行卡卡号">
-              <el-input v-model="formItem.cardNumber" style="width: 217px" placeholder="银行卡卡号"></el-input>
+              <el-input disabled v-model="formItem.bankAccount" style="width: 217px" placeholder="银行卡卡号"></el-input>
             </el-form-item>
-            <!--<el-form-item label="银行卡姓名">
-              <el-input v-model="formItem.name" style="width: 217px" placeholder="银行卡姓名"></el-input>
-            </el-form-item> -->
+            <el-form-item label="银行卡类型" disabled>
+              <el-select disabled v-model="formItem.bankId">
+                <el-option v-for="item in bankList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="银行卡姓名" disabled>
+              <el-input disabled v-model="formItem.loginUserTruename" style="width: 217px" placeholder="银行卡姓名"></el-input>
+            </el-form-item>
             <el-form-item label="交易时间">
               <el-date-picker
                 v-model="formItem.transationTime"
@@ -59,22 +65,43 @@
       <span>充值记录</span>
     </div>
      <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="submissionTime" label="提交时间"></el-table-column>
-      <el-table-column prop="bank" label="转账银行"></el-table-column>
-      <el-table-column prop="branch" label="开户行"></el-table-column>
-      <el-table-column prop="money" label="金额"></el-table-column>
-      <el-table-column prop="examineTime" label="审核时间" ></el-table-column>
-      <el-table-column prop="examineStatus" label="审核状态"></el-table-column>
-      <el-table-column prop="example" label="备注"></el-table-column>
+      <el-table-column prop="transationTime" label="交易时间" align="center"></el-table-column>
+      <el-table-column prop="bankAccount" label="转账银行" align="center"></el-table-column>
+      <el-table-column prop="transationAmount" label="金额" align="center"></el-table-column>
+      <el-table-column prop="auditTime" label="审核时间" align="center"></el-table-column>
+      <el-table-column prop="auditStatus" label="审核状态" align="center"></el-table-column>
+      <el-table-column prop="example" label="备注" align="center"></el-table-column>
     </el-table>
   <el-pagination
     background
     layout="prev, pager, next"
     :page-size="tablePage.pageSize"
     :current-page="tablePage.page"
+    @current-change="currentChange"
     :total="tablePage.total">
   </el-pagination>
   </el-card>
+  <el-dialog title="添加银行卡" :visible.sync="addModel" width="40%">
+    <div>
+      <el-form :model="addformItem"  label-width="90px">
+            <el-form-item label="银行卡卡号">
+              <el-input v-model="addformItem.cardNumber" style="width: 217px" placeholder="银行卡卡号"></el-input>
+            </el-form-item>
+            <el-form-item label="银行卡类型">
+              <el-select v-model="addformItem.type">
+                <el-option v-for="item in bankList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="银行卡姓名">
+              <el-input v-model="addformItem.name" style="width: 217px" placeholder="银行卡姓名"></el-input>
+            </el-form-item>
+          </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addModel = false">取 消</el-button>
+        <el-button type="primary" @click="addBankMes">确 定</el-button>
+      </span>
+  </el-dialog>
 </div>
 </template>
 <script>
@@ -95,32 +122,64 @@ export default {
           subbranchBankName: "杭州支行"
         },
         formItem: {
-          money: 33,
-          bank: "BOC",
+          money: 0,
+          loginUserTruename: "",
+          bankAccount: "",
+          transationTime: null,
+          bankId: ""
+        },
+        addformItem: {
+          id: "",
+          bank: "",
           name: "",
           cardNumber: "",
-          transationTime: null
+          type: ""
         },
         tableData: [],
         tablePage: {
-          page: 2,
+          page: 1,
           pageSize: 10,
           total: 100
-        }
+        },
+        addModel: false,
+        bankList: ""
     };
   },
   mounted () {
-      this.getBank();
+      this.getBankList();
+      this.getUserBank();
       this.getRecharge();
       this.getUserMoneyLog();
-      ajaxMy.get("/api/v1/user/recharge/").then((res) => {
-        console.log(res);
-      });
   },
   methods: {
-    getBank () {
-      ajaxMy.get("/api/v1/bank").then((res) => {
-        console.log(res);
+    addCard () {
+      this.addModel = true;
+    },
+    addBankMes () {
+      ajaxMy.patch("/api/v1/user/user_bank", {
+        bankId: this.addformItem.type,
+        bankAccount: this.addformItem.cardNumber,
+        loginUserTruename: this.addformItem.name,
+        id: this.addformItem.id
+      }).then((res) => {
+        this.addModel = false;
+        this.$message({
+            message: '添加成功',
+            type: 'success'
+        });
+        this.getUserBank();
+      });
+    },
+    getUserBank () {
+      ajaxMy.get("/api/v1/user/user_bank").then((res) => {
+        this.formItem.loginUserTruename = res.data.loginUserTruename;
+        this.formItem.bankAccount = res.data.bankAccount;
+        this.formItem.bankId = res.data.bankId;
+      });
+    },
+    getBankList () {
+      ajaxMy.get("/api/v1/bank/type").then((res) => {
+        this.bankList = res.data;
       });
     },
     getRecharge () {
@@ -130,12 +189,13 @@ export default {
     },
     onCharge () {
       ajaxMy.post("/api/v1/user/recharge", {
-        bankAccount: this.formItem.cardNumber,
+        bankAccount: this.formItem.bankAccount,
         transationAmount: this.formItem.money,
+        payUsername: this.formItem.loginUserTruename,
+        bankId: this.formItem.bankId,
         transationType: 1,
         transationTime: this.formItem.transationTime
       }).then((res) => {
-        console.log(res);
         if (res.data.code === "200") {
           this.$message({
               message: '提交成功，待管理员审核',
@@ -144,14 +204,20 @@ export default {
         };
       });
     },
+    currentChange (val) {
+      this.tablePage.page = val;
+    },
     getUserMoneyLog () {
-      ajaxMy.get("/api/v1/user/user_Money_Log", {
+      ajaxMy.get("/api/v1/user/user_money_log", {
         params: {
-          transationType: 1
+          transationType: 1,
+          page: this.tablePage.page,
+          size: this.tablePage.pageSize
         }
       }).then((res) => {
-        console.log(res);
-      })
+        this.tablePage.total = res.data.total;
+        this.tableData = res.data.list;
+      });
     }
   }
 };
@@ -175,7 +241,7 @@ export default {
   }
 }
 .card_mid {
-  height: 210px;
+  height: 375px;
   font-size: 16px;
   strong {
     font-size: 14px;
