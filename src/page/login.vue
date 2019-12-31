@@ -64,8 +64,8 @@ export default {
     this.checked = localStorage.getItem('pwdChecked') === 'true';
     this.ruleForm.checkPass = "";
     if (this.checked) { // 记住密码操作
-      this.ruleForm.account = this.$store.state.common.username;
-      this.ruleForm.checkPass = this.$store.state.common.password;
+      this.ruleForm.account = localStorage.getItem("SET_USERNAME");
+      this.ruleForm.checkPass = localStorage.getItem("SET_PASSWORD");
     }
   },
   methods: {
@@ -89,8 +89,8 @@ export default {
             ajaxMy.post("/api/v1/user/login", params).then((res) => {
               if (res.data.code === "200") {
                 localStorage.setItem("pwdChecked", JSON.stringify(this.checked)); // 记住密码
-                this.$store.commit('SET_USERNAME', this.ruleForm.account);
-                this.$store.commit('SET_PASSWORD', this.ruleForm.checkPass);
+                localStorage.setItem("SET_USERNAME", JSON.stringify(this.ruleForm.account));
+                localStorage.setItem("SET_PASSWORD", JSON.stringify(this.ruleForm.checkPass));
                 sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
                 sessionStorage.setItem("AUTH_TOOKEN", res.headers.authorization); // session存储用户信息
                 this.logining = false;

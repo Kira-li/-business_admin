@@ -7,7 +7,7 @@
         <div class="card_mid border_rad">
           <div><strong>第一步：请先转账到以下账户</strong></div>
           <p>银行卡号：{{bank.accountNumber}}</p>
-          <p>户名：{{bank.accountName}}</p>
+          <p>银行卡姓名：{{bank.accountName}}</p>
           <p>开户行：{{bank.bankName}}</p>
           <p>支行：{{bank.subbranchBankName}}</p>
           <div><el-button type="primary" size="mini" @click="addCard" style="margin-top:10px">添加个人银行卡</el-button></div>
@@ -67,9 +67,22 @@
      <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="transationTime" label="交易时间" align="center"></el-table-column>
       <el-table-column prop="bankAccount" label="转账银行" align="center"></el-table-column>
+      <el-table-column prop="payUsername" label="转账人" align="center"></el-table-column>
       <el-table-column prop="transationAmount" label="金额" align="center"></el-table-column>
       <el-table-column prop="auditTime" label="审核时间" align="center"></el-table-column>
-      <el-table-column prop="auditStatus" label="审核状态" align="center"></el-table-column>
+      <el-table-column prop="auditStatus" label="审核状态" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.auditStatus === 1">
+            <span>已审核</span>
+          </template>
+          <template v-if="scope.row.auditStatus === 0">
+            <span style="color:#fd806c;">未审核</span>
+          </template>
+          <template v-if="scope.row.auditStatus === -1">
+            <span style="color:#fd806c;">审核失败</span>
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column prop="example" label="备注" align="center"></el-table-column>
     </el-table>
   <el-pagination
@@ -201,11 +214,13 @@ export default {
               message: '提交成功，待管理员审核',
               type: 'success'
           });
+          this.getUserMoneyLog();
         };
       });
     },
     currentChange (val) {
       this.tablePage.page = val;
+      this.getUserMoneyLog();
     },
     getUserMoneyLog () {
       ajaxMy.get("/api/v1/user/user_money_log", {

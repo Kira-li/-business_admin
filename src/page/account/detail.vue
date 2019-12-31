@@ -7,17 +7,13 @@
           <el-option value="all" label="全部任务"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="店铺名称：">
-        <el-input v-model="formItem.name" placeholder="店铺名称"></el-input>
-      </el-form-item>
       <el-form-item label="任务ID：">
         <el-input v-model="formItem.id" placeholder="任务ID"></el-input>
       </el-form-item>
-      <el-form-item label="财务类型：">
-        <el-input v-model="formItem.finaType" placeholder="财务类型"></el-input>
-      </el-form-item>
-      <el-form-item label="旺旺号：">
-        <el-input v-model="formItem.wwNo" placeholder="旺旺号"></el-input>
+      <el-form-item label="交易类型：">
+        <el-select v-model="formItem.transationType">
+          <el-option value="all" label="全部任务"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="时间：">
         <el-date-picker
@@ -28,18 +24,28 @@
           end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-button type="success" @click="query">确定</el-button>
+      <el-button type="success" @click="getUserMoneyLog">确定</el-button>
     </el-form>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="submissionTime" label="店铺名称" align="center"></el-table-column>
-      <el-table-column prop="bank" label="任务ID" align="center"></el-table-column>
-      <el-table-column prop="branch" label="旺旺号" align="center"></el-table-column>
-      <el-table-column prop="money" label="收支" align="center"></el-table-column>
-      <el-table-column prop="examineTime" label="本金/佣金/增值服务" align="center"></el-table-column>
-      <el-table-column prop="examineStatus" label="冻结余额" align="center"></el-table-column>
-      <el-table-column prop="examineStatus" label="余额" align="center"></el-table-column>
-      <el-table-column prop="examineStatus" label="财务类型" align="center"></el-table-column>
-      <el-table-column prop="time" label="时间" align="center"></el-table-column>
+      <el-table-column prop="transationTime" label="交易时间" align="center"></el-table-column>
+      <el-table-column prop="bankAccount" label="转账银行" align="center"></el-table-column>
+      <el-table-column prop="payUsername" label="转账人" align="center"></el-table-column>
+      <el-table-column prop="transationAmount" label="金额" align="center"></el-table-column>
+      <el-table-column prop="transationType" label="交易类型" align="center"></el-table-column>
+      <el-table-column prop="auditTime" label="审核时间" align="center"></el-table-column>
+      <el-table-column prop="auditStatus" label="审核状态" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.auditStatus === 1">
+            <span>已审核</span>
+          </template>
+          <template v-if="scope.row.auditStatus === 0">
+            <span style="color:#fd806c;">未审核</span>
+          </template>
+          <template v-if="scope.row.auditStatus === -1">
+            <span style="color:#fd806c;">审核失败</span>
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column prop="example" label="备注" align="center"></el-table-column>
     </el-table>
     <div style="margin-top:10px;">
@@ -49,6 +55,7 @@
         layout="prev, pager, next"
         :page-size="tablePage.pageSize"
         :current-page="tablePage.page"
+        @current-change="currentChange"
         :total="tablePage.total">
       </el-pagination>
       <el-button style="float: right">导出当前明细</el-button>
@@ -57,6 +64,7 @@
 </div>
 </template>
 <script>
+import ajaxMy from "@/config/request.js";
 export default {
   data () {
     return {
@@ -65,21 +73,37 @@ export default {
           type: "all",
           name: "",
           id: "",
-          finaType: "",
+          transationType: "",
           wwNo: "",
           time: null
         },
         tableData: [],
         tablePage: {
-          page: 2,
+          page: 1,
           pageSize: 10,
           total: 100
         }
     };
   },
+  mounted () {
+    this.getUserMoneyLog();
+  },
   methods: {
-    query () {
-      console.log("query");
+    currentChange (val) {
+      this.tablePage.page = val;
+      this.getUserMoneyLog();
+    },
+    getUserMoneyLog () {
+      ajaxMy.get("/api/v1/user/user_money_log", {
+        params: {
+          transationType: this.formItem.transationType,
+          page: this.tablePage.page,
+          size: this.tablePage.pageSize
+        }
+      }).then((res) => {
+        this.tablePage.total = res.data.total;
+        this.tableData = res.data.list;
+      });
     }
   }
 };
