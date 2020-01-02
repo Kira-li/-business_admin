@@ -2,18 +2,19 @@
 <div class="container-box">
   <div>
     <el-form :inline="true" label-width="100px" :model="formItem">
-      <el-form-item label="任务类型：">
-        <el-select v-model="formItem.type">
-          <el-option value="all" label="全部任务"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="任务ID：">
-        <el-input v-model="formItem.id" placeholder="任务ID"></el-input>
-      </el-form-item>
       <el-form-item label="交易类型：">
         <el-select v-model="formItem.transationType">
-          <el-option value="all" label="全部任务"></el-option>
+          <el-option value="" label="全部"></el-option>
+          <el-option value="1" label="用户充值"></el-option>
+          <el-option value="2" label="管理员充值"></el-option>
+          <el-option value="3" label="管理员扣除"></el-option>
+          <el-option value="4" label="发布任务消耗"></el-option>
+          <el-option value="5" label="接任务获取"></el-option>
+          <el-option value="6" label="提现消耗"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="任务ID：" v-if="formItem.transationType===3||formItem.transationType===4">
+        <el-input v-model="formItem.taskId" placeholder="任务ID"></el-input>
       </el-form-item>
       <el-form-item label="时间：">
         <el-date-picker
@@ -70,11 +71,8 @@ export default {
     return {
         activeName: 'second',
         formItem: {
-          type: "all",
-          name: "",
-          id: "",
+          taskId: "",
           transationType: "",
-          wwNo: "",
           time: null
         },
         tableData: [],
@@ -96,6 +94,7 @@ export default {
     getUserMoneyLog () {
       ajaxMy.get("/api/v1/user/user_money_log", {
         params: {
+          taskId: this.formItem.taskId,
           transationType: this.formItem.transationType,
           page: this.tablePage.page,
           size: this.tablePage.pageSize
