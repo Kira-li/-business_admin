@@ -31,7 +31,7 @@
 import { mapMutations } from "vuex";
 // import * as commonApi from "api/common";
 import * as types from "../store/mutation-types";
-import ajaxMy from "@/config/request.js";
+// import ajaxMy from "@/config/request.js";
 export default {
   props: {},
   data () {
@@ -86,23 +86,29 @@ export default {
               password: this.ruleForm.checkPass,
               timeout: 60 * 60
             };
-            ajaxMy.post("/api/v1/user/login", params).then((res) => {
-              if (res.data.code === "200") {
-                localStorage.setItem("pwdChecked", JSON.stringify(this.checked)); // 记住密码
-                localStorage.setItem("SET_USERNAME", JSON.stringify(this.ruleForm.account));
-                localStorage.setItem("SET_PASSWORD", JSON.stringify(this.ruleForm.checkPass));
-                sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
-                sessionStorage.setItem("AUTH_TOOKEN", res.headers.authorization); // session存储用户信息
-                this.logining = false;
-                this.$router.push({ path: "/index/home" }); // 去主页
-              } else {
-                this.logining = false;
-                this.$message({
-                    message: res.data.message,
-                    type: 'error'
-                });
-              }
-            });
+            localStorage.setItem("pwdChecked", JSON.stringify(this.checked)); // 记住密码
+            localStorage.setItem("SET_USERNAME", JSON.stringify(this.ruleForm.account));
+            localStorage.setItem("SET_PASSWORD", JSON.stringify(this.ruleForm.checkPass));
+            sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
+            this.logining = false;
+            this.$router.push({ path: "/index/home" }); // 去主页
+            // ajaxMy.post("/api/v1/user/login", params).then((res) => {
+            //   if (res.data.code === "200") {
+            //     localStorage.setItem("pwdChecked", JSON.stringify(this.checked)); // 记住密码
+            //     localStorage.setItem("SET_USERNAME", JSON.stringify(this.ruleForm.account));
+            //     localStorage.setItem("SET_PASSWORD", JSON.stringify(this.ruleForm.checkPass));
+            //     sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
+            //     sessionStorage.setItem("AUTH_TOOKEN", res.headers.authorization); // session存储用户信息
+            //     this.logining = false;
+            //     this.$router.push({ path: "/index/home" }); // 去主页
+            //   } else {
+            //     this.logining = false;
+            //     this.$message({
+            //         message: res.data.message,
+            //         type: 'error'
+            //     });
+            //   }
+            // });
           }, 1000);
         } else {
           return false;

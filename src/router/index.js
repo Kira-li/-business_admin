@@ -14,6 +14,7 @@ import rates from '../page/account/rates.vue';
 import recharge from '../page/account/recharge.vue';
 import addShop from '../page/shop/add.vue';
 import shopList from '../page/shop/shopList.vue';
+import invteFriend from '../page/shop/invteFriend.vue';
 import newFlow from '../page/plan/newFlow.vue';
 import flowPlan from '../page/plan/flowPlan.vue';
 import newSell from '../page/plan/newSell.vue';
@@ -206,6 +207,11 @@ const routes = [
         path: 'shopList',
         component: shopList,
         name: '店铺列表'
+      },
+      {
+        path: 'invteFriend',
+        component: invteFriend,
+        name: '邀请好友'
       }
     ]
   }
